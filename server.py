@@ -2,6 +2,7 @@ import os
 import argparse
 from http.server import HTTPServer, SimpleHTTPRequestHandler
 
+
 def run(
     server_class=HTTPServer,
     handler_class=SimpleHTTPRequestHandler,
@@ -14,6 +15,7 @@ def run(
     httpd = server_class(server_address, handler_class)
     print(f"Serving HTTP on http://localhost:{port} from directory '{directory}'...")
     httpd.serve_forever()
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="HTTP Server")
