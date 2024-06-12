@@ -19,7 +19,7 @@ class TextNode:
         return False
     
     def __repr__(self):
-        return f"TextNode({self.text}{self.text_type}{self.url})"
+        return f"TextNode(text='{self.text}', text_type='{self.text_type} {self.url}')"
 
 def text_node_to_html_node(text_node):
     if text_node.text_type == text_type_text:
@@ -35,3 +35,4 @@ def text_node_to_html_node(text_node):
     if text_node.text_type == text_type_image:
         return LeafNode("img", "", {"src": text_node.url, "alt": text_node.text})
     raise ValueError(f"Invalid text type: {text_node.text_type}")
+
