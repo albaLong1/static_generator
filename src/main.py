@@ -1,36 +1,29 @@
-from textnode import TextNode
+import os
+import shutil
 
-from inline_markdown import (
-    split_nodes_delimiter,
-    extract_markdown_images,
-    extract_markdown_links,
-    split_nodes_image
-)
+from copystatic import copy_files_recursive
+from gencontent import generate_page
 
-text_type_text = "text"
-text_type_bold = "bold"
-text_type_italic = "italic"
-text_type_code = "code"
-text_type_image = "image"
+dir_path_static = "./static"
+dir_path_public = "./public"
+dir_path_content = "./content"
+template_path = "./template.html"
+
 
 def main():
-    dummy_value1 = TextNode("This is a [text] node,",text_type_text)
-    new_nodes = split_nodes_delimiter([dummy_value1],"'", text_type_italic)
-    text = "This is text with an ![image](https://storage.googleapis.com/qvault-webapp-dynamic-assets/course_assets/zjjcJKZ.png) and ![another](https://storage.googleapis.com/qvault-webapp-dynamic-assets/course_assets/dfsdkjfd.png)"
-    new_list = extract_markdown_images(text)
-    for item in new_list:
-        print(item)
-    text1 = "This is text with a [link](https://www.example.com) and [another](https://www.example.com/another)"
-    print(extract_markdown_links(text1))
-    node = TextNode(
-        "This is text with an ![image](https://storage.googleapis.com/qvault-webapp-dynamic-assets/course_assets/zjjcJKZ.png) and another ![second image](https://storage.googleapis.com/qvault-webapp-dynamic-assets/course_assets/3elNhQu.png)",
-        text_type_text,
+    print("Deleting public directory...")
+    if os.path.exists(dir_path_public):
+        shutil.rmtree(dir_path_public)
+
+    print("Copying static files to public directory...")
+    copy_files_recursive(dir_path_static, dir_path_public)
+
+    print("Generating page...")
+    generate_page(
+        os.path.join(dir_path_content, "index.md"),
+        template_path,
+        os.path.join(dir_path_public, "index.html"),
     )
-    new_nodes = split_nodes_image([node])
-    print(new_nodes)
-
-    
 
 
-if __name__ == "__main__":
-    main()
+main()
